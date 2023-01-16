@@ -7,7 +7,17 @@ export default function EtherAccountInfo() {
 
   const connectToWalletHandler = () => {
     if (window.ethereum) {
-      console.log("Condition true");
+      window.ethereum
+        .request({ method: "eth_requestAccounts" })
+        .then((result) => {
+          setAccountAddress(result[0]);
+          window.ethereum
+            .request({
+              method: "eth_getBalance",
+              params: [result[0], "latest"],
+            })
+            .then((balance) => setAccountBalance(balance));
+        });
     } else {
       setErrorMessage("Please Install Metamask");
     }
