@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ethers } from "ethers";
 
 export default function EtherAccountInfo() {
   const [accountAddress, setAccountAddress] = useState(null);
@@ -16,7 +17,9 @@ export default function EtherAccountInfo() {
               method: "eth_getBalance",
               params: [result[0], "latest"],
             })
-            .then((balance) => setAccountBalance(balance));
+            .then((balance) =>
+              setAccountBalance(ethers.utils.formatEther(balance))
+            );
         });
     } else {
       setErrorMessage("Please Install Metamask");
